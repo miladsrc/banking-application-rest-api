@@ -22,7 +22,7 @@ public class Account {
     @Column(name = "account-holder-name")
     String accountHolderName;
 
-    @Column(name = "cash-in-hand")
+    @Column(name = "amount")
     double balance;
 
 }

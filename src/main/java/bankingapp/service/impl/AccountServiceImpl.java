@@ -5,6 +5,7 @@ import bankingapp.entity.Account;
 import bankingapp.mapper.AccountMapper;
 import bankingapp.repostiroy.AccountRepository;
 import bankingapp.service.AccountService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,21 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("Account does not exist!"));
         return AccountMapper.mapToAccountDto(account);
+    }
+
+    @Override
+    @Transactional
+    public AccountDto deposit(Long id, double amount) {
+        Account account = accountRepository
+                .findById(id)
+                .orElseThrow(()-> new RuntimeException("Account does not exist!"));
+
+        double accountBalance = account.getBalance();
+        accountBalance+=amount;
+        account.setBalance(accountBalance);
+        Account savedAccount = accountRepository.save(account);
+
+        return AccountMapper.mapToAccountDto(savedAccount);
     }
 
 
