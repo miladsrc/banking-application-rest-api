@@ -9,6 +9,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class AccountServiceImpl implements AccountService {
 
@@ -66,6 +69,14 @@ public class AccountServiceImpl implements AccountService {
 
 
         return AccountMapper.mapToAccountDto(accountSaved);
+    }
+
+    @Override
+    public List<AccountDto> getAllAccounts() {
+        List<Account> accountList = accountRepository.findAll();
+        return  accountList.stream()
+                .map(AccountMapper::mapToAccountDto)
+                .collect(Collectors.toList());
     }
 
 
